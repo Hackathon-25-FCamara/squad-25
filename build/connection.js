@@ -7,7 +7,7 @@ const knex_1 = __importDefault(require("knex"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const connection = (0, knex_1.default)({
-    client: "mysql",
+    client: "mysql2",
     connection: {
         host: process.env.DB_HOST,
         port: 3306,

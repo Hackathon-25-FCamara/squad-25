@@ -15,13 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("./app"));
 const connection_1 = __importDefault(require("./connection"));
 app_1.default.get("/users", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("rodei", connection_1.default.client);
     try {
         const result = yield connection_1.default.raw('SELECT * FROM Users;');
-        res.send(result[0]);
+        res.send(result.length === 1 ? result[0][0] : result[0]);
     }
     catch (error) {
-        console.log("rodei");
         res.send(error.message);
     }
 }));
@@ -42,7 +40,6 @@ app_1.default.post("/users", (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.status(201).send("Success!");
     }
     catch (error) {
-        console.log(error.message);
         res.status(500).send("An unexpected error occurred");
     }
 }));
