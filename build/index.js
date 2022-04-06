@@ -43,3 +43,50 @@ app_1.default.post("/users", (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.status(500).send("An unexpected error occurred");
     }
 }));
+app_1.default.put("/users/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield connection_1.default.raw(`
+       UPDATE Users
+        SET 
+           name = "${req.body.name}",
+           email = "${req.body.email}",
+           password = "${req.body.password}",
+           photo = "${req.body.photo}",
+           bio = "${req.body.bio}",
+           links = "${req.body.links}",
+           role = "${req.body.role}",
+        
+       WHERE id = ${req.params.id}; `);
+        res.status(200).send("Success!");
+    }
+    catch (error) {
+        console.log(error.message);
+        res.status(500).send("An unexpected error occurred");
+    }
+}));
+app_1.default.delete("/users/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield connection_1.default.raw(`
+       DELETE FROM Users  
+           WHERE id = ${req.params.id}; `);
+        res.status(200).send("Success!");
+    }
+    catch (error) {
+        console.log(error.message);
+        res.status(500).send("An unexpected error occurred");
+    }
+}));
+app_1.default.get("/users/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const data = yield connection_1.default.raw(`
+       SELECT name, email, password, photo, bio, links, role FROM Users
+       WHERE id = ${req.params.id}; `);
+        //res.status(201).json(data);
+        console.log(data[0]);
+        res.status(200).send("Success!");
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).send("An unexpected error occurred");
+    }
+}));
