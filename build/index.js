@@ -17,7 +17,7 @@ const connection_1 = __importDefault(require("./connection"));
 app_1.default.get("/users", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield connection_1.default.raw('SELECT * FROM Users;');
-        res.send(result.length === 1 ? result[0][0] : result[0]);
+        res.send(result[0].length === 1 ? result[0][0] : result[0]);
     }
     catch (error) {
         res.send(error.message);
