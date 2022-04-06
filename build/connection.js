@@ -7,10 +7,10 @@ const knex_1 = __importDefault(require("knex"));
 const connection = (0, knex_1.default)({
     client: "mysql",
     connection: {
-        host: "localhost",
+        host: "http://localhost",
         port: 3306,
         user: "root",
-        password: "ahninanab",
+        password: "",
         database: "technical_share",
         multipleStatements: true,
     },

@@ -22,3 +22,7 @@ app.post("/users", async (req: Request, res: Response) => {
      console.log(error.message);
      res.status(500).send("An unexpected error occurred")
   }})
+
+  app.get("/", (req, res) => {
+     res.send("Rodei")
+  })
