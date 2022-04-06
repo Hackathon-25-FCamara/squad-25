@@ -7,13 +7,15 @@ app.post("/users", async (req: Request, res: Response) => {
   try {
      await connection.raw(`
         INSERT INTO Users
-           (id, name, salary, birth_date, gender)
+           (name, email, password, photo, bio, links, role)
         VALUES (
-           ${Date.now().toString()},
            "${req.body.name}",
-           ${req.body.salary},
-           "${req.body.birthDate}",
-           "${req.body.gender}"
+           "${req.body.email}",
+           "${req.body.password}",
+           "${req.body.photo}",
+           "${req.body.bio}",
+           "${req.body.links}",
+           "${req.body.role}",
 ); `)
      res.status(201).send("Success!")
   } catch (error: any) {
