@@ -5,7 +5,7 @@ import connection from "./connection"
 app.get("/users", async (req, res) => {
   try {
     const result = await connection.raw('SELECT * FROM Users;')
-    res.send(result.length === 1 ? result[0][0] : result[0])
+    res.send(result[0].length === 1 ? result[0][0] : result[0])
   } catch (error: any) {
     res.send(error.message)
   }
