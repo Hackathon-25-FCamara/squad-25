@@ -1,5 +1,7 @@
 USE  `technical_share`;
 
+SELECT * FROM Users;
+
 CREATE TABLE Users(
   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
@@ -8,9 +10,28 @@ CREATE TABLE Users(
   photo VARCHAR(255) NOT NULL,
   bio VARCHAR(255) NOT NULL,
   links VARCHAR(255) NOT NULL,
-  skills ENUM("") NOT NULL,
   role VARCHAR(255) NOT NULL,
-  mentor INT,
-  mentoring VARCHAR(255),
-  posts JSON
+  FOREIGN KEY (mentorID) references Users(id)
 );
+
+CREATE TABLE Posts(
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  userID INT,
+  title VARCHAR(255) NOT NULL,
+  body VARCHAR(1000) NOT NULL,
+  votes INT,
+  post_date DATE,
+  comments INT,
+  FOREIGN KEY (userID) references Users(id),
+  FOREIGN KEY (comments) references Comments(id)
+);
+
+CREATE TABLE Comments(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    userID INT,
+	body VARCHAR(1000) NOT NULL,
+    votes INT,
+	post_date DATE
+);
+
+ALTER TABLE Users DROP COLUMN mentor;
