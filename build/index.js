@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("./app"));
 const connection_1 = __importDefault(require("./connection"));
+// Pega users na database
 app_1.default.get("/users", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield connection_1.default.raw('SELECT * FROM Users;');
@@ -23,6 +24,7 @@ app_1.default.get("/users", (req, res) => __awaiter(void 0, void 0, void 0, func
         res.send(error.message);
     }
 }));
+// Cria novo user
 app_1.default.post("/users", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield connection_1.default.raw(`
@@ -43,20 +45,20 @@ app_1.default.post("/users", (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.status(500).send("An unexpected error occurred");
     }
 }));
+// Pega user pelo id
 app_1.default.get("/users/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = yield connection_1.default.raw(`
-       SELECT name, email, password, photo, bio, links, role FROM Users
+       SELECT * FROM Users
        WHERE id = ${req.params.id}; `);
-        //res.status(201).json(data);
-        console.log(data[0]);
-        res.status(200).send("Success!");
+        res.status(200).send(data[0][0]);
     }
     catch (error) {
         console.log(error);
         res.status(500).send("An unexpected error occurred");
     }
 }));
+// Atualiza dados de user pelo id
 app_1.default.put("/users/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield connection_1.default.raw(`
@@ -69,15 +71,19 @@ app_1.default.put("/users/:id", (req, res) => __awaiter(void 0, void 0, void 0, 
            bio = "${req.body.bio}",
            links = "${req.body.links}",
            role = "${req.body.role}",
-        
+           mentorID = ${req.body.mentorID}
        WHERE id = ${req.params.id}; `);
-        res.status(200).send("Success!");
+        const data = yield connection_1.default.raw(`
+       SELECT * FROM Users
+       WHERE id = ${req.params.id}; `);
+        res.status(200).send(data[0][0]);
     }
     catch (error) {
         console.log(error.message);
         res.status(500).send("An unexpected error occurred");
     }
 }));
+// Deleta user pelo id
 app_1.default.delete("/users/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield connection_1.default.raw(`

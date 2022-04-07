@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import app from "./app"
 import connection from "./connection"
 
+// Pega users na database
 app.get("/users", async (req, res) => {
   try {
     const result = await connection.raw('SELECT * FROM Users;')
@@ -11,6 +12,7 @@ app.get("/users", async (req, res) => {
   }
 })
 
+// Cria novo user
 app.post("/users", async (req: Request, res: Response) => {
   try {
     await connection.raw(`
@@ -31,20 +33,21 @@ app.post("/users", async (req: Request, res: Response) => {
   }
 })
 
+// Pega user pelo id
 app.get("/users/:id", async (req: Request, res: Response) => {
   try {
     const data = await connection.raw(`
-       SELECT name, email, password, photo, bio, links, role FROM Users
+       SELECT * FROM Users
        WHERE id = ${req.params.id}; `);
-    //res.status(201).json(data);
-    console.log(data[0]);
-    res.status(200).send("Success!");
+
+    res.status(200).send(data[0][0]);
   } catch (error: any) {
     console.log(error);
     res.status(500).send("An unexpected error occurred");
   }
 })
 
+// Atualiza dados de user pelo id
 app.put("/users/:id", async (req: Request, res: Response) => {
   try {
     await connection.raw(`
@@ -57,15 +60,21 @@ app.put("/users/:id", async (req: Request, res: Response) => {
            bio = "${req.body.bio}",
            links = "${req.body.links}",
            role = "${req.body.role}",
-        
+           mentorID = ${req.body.mentorID}
        WHERE id = ${req.params.id}; `);
-    res.status(200).send("Success!");
+
+       const data = await connection.raw(`
+       SELECT * FROM Users
+       WHERE id = ${req.params.id}; `);
+
+    res.status(200).send(data[0][0]);
   } catch (error: any) {
     console.log(error.message);
     res.status(500).send("An unexpected error occurred");
   }
 })
 
+// Deleta user pelo id
 app.delete("/users/:id", async (req: Request, res: Response) => {
   try {
     await connection.raw(`

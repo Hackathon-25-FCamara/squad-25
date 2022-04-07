@@ -1,4 +1,4 @@
-USE  `technical_share`;
+USE  `heroku_c87f19f0155779c`;
 
 SELECT * FROM Users;
 
@@ -11,6 +11,7 @@ CREATE TABLE Users(
   bio VARCHAR(255) NOT NULL,
   links VARCHAR(255) NOT NULL,
   role VARCHAR(255) NOT NULL,
+  mentorID INT,
   FOREIGN KEY (mentorID) references Users(id)
 );
 
@@ -19,7 +20,7 @@ CREATE TABLE Posts(
   userID INT,
   title VARCHAR(255) NOT NULL,
   body VARCHAR(1000) NOT NULL,
-  votes INT,
+  votes INT DEFAULT 0,
   post_date DATE,
   comments INT,
   FOREIGN KEY (userID) references Users(id),
@@ -30,8 +31,7 @@ CREATE TABLE Comments(
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     userID INT,
 	body VARCHAR(1000) NOT NULL,
-    votes INT,
-	post_date DATE
+    votes INT DEFAULT 0,
+	post_date DATE,
+    FOREIGN KEY (userID) references Users(id)
 );
-
-ALTER TABLE Users DROP COLUMN mentor;
